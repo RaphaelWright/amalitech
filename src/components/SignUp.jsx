@@ -5,7 +5,7 @@ const SignUp = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,11 +24,15 @@ const SignUp = () => {
 
     if (!response.ok) {
       throw  new Error(data.message || 'Signup Failed');
-    } 
+    } else {
+      console.log("successful")
+    }
     } catch (err) {
-      setError(err.message || 'Signup was not successful');
+      console.log(err || 'Signup was not successful');
+
     } finally {
       setLoading(false);
+  
     }
 
 
@@ -79,7 +83,9 @@ const SignUp = () => {
           />
         </p>
 
-        <button type="submit" className="w-full border px-10 my-5 bg-orange-400 hover:border hover:border-orange-400 hover:bg-white">Sign Up</button>
+        <button type="submit" className="w-full border px-10 my-5 bg-orange-400 hover:border hover:border-orange-400 hover:bg-white">
+          {loading ? "Loading..." : "Sign Up"}
+        </button>
       </form>
     </div>
   );
