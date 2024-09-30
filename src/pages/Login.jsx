@@ -1,12 +1,28 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+
+  function validateEmail(email) {
+    const re = /\S+@\S+\.\S+/;
+    return re.test(email);
+  }
 
   const handleSubmit =async (e) => {
     e.preventDefault();
+
+    if (!validateEmail(email)) {
+      alert("Invalid Email");
+      return;
+    }
+
+    setLoading(true);
+
 
     try {
 
@@ -22,9 +38,11 @@ const Login = () => {
 
       if (!login_response.ok) {
         throw new Error(data.message || 'Login Failed');
-      } else {
-        console.log("successful");
-      }
+      } 
+
+      localStorage.setItem("token", data.token);
+
+      navigate('/main')
 
     } catch (err) {
       console.log(err.message || 'Login was not successful');
@@ -32,6 +50,8 @@ const Login = () => {
       setLoading(false);
     }
   };
+
+
 
   return (
     <div className = "flex justify-center mt-48">
@@ -60,7 +80,7 @@ const Login = () => {
           />
         </p>
 
-        <button type="submit" className="w-full border py-1 px-10 my-5 rounded-3xl bg-orange-300 hover:border hover:border-orange-400 hover:bg-white">{loading? "Signing In" : "Sign In"}</button>
+        <button type="submit" className="w-full border py-1 px-10 my-5 rounded-3xl bg-orange-300 hover:border hover:border-orange-400 hover:bg-white">{loading? "Signing In..." : "Sign In"}</button>
       </form>
     </div>
   );

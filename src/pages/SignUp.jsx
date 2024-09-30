@@ -43,6 +43,8 @@ const SignUp = () => {
       alert("Passwords do not match");
       return;
     } else {
+
+      setLoading(true)
       try {
         const response = await fetch(
           "https://user-auth-server.onrender.com/api/v1/user/signup",
